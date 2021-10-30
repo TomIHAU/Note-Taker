@@ -3,7 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const app = express();
 const { v4: uuidv4 } = require("uuid");
-
+let db = require("./db/db.json");
 const PORT = process.env.PORT || 3001;
 
 app.use(express.static("public"));
@@ -15,24 +15,35 @@ app.get("/notes", (req, res) =>
 );
 
 app.get("/api/notes", (req, res) => {
-  res.json("./db/db.json");
+  res.json(db);
 });
 
 app.post("/api/notes", (req, res) => {
   let notePosted = req.body;
-  let notes = JSON.parse(fs.readFile("/db/db.json", "utf8"));
   notePosted.id = uuidv4();
+
+  let notes = db;
   notes.push(notePosted);
 
-  fs.writeFile("./db/db.json", JSON.stringify(notes));
+  fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
   res.json(notes);
 });
 
 app.delete("/api/notes:id", (req, res) => {
-  const notes = JSON.parse(fs.readFile("/db/db.json", "utf8"));
+  const notes = JSON.parse(fs.readFile("./db/db.json", "utf8"));
   const keptNotes = notes.filter((note) => note.id != req.params.id);
 
-  fs.writeFile("./db/db.json", JSON.stringify(keptNotes));
+  fs.writeFile("./db/db.json", JSON.stringify(keptNotes), (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
   res.json(keptNotes);
 });
 
