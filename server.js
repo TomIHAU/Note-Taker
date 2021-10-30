@@ -39,3 +39,5 @@ app.delete("/api/notes:id", (req, res) => {
   fs.writeFile("./db/db.json", JSON.stringify(keptNotes));
   res.json(keptNotes);
 });
+
+app.listen(PORT, () => console.log(`Listening for requests on port ${PORT}!`));
