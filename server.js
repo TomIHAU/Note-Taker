@@ -11,16 +11,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/notes", (req, res) =>
-  res.sendFile(path.join(__dirname, "./public/notes.html"))
+  res.sendFile(path.join(__dirname, "/public/notes.html"))
 );
 
 app.get("/api/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "./db/db.json"));
+  res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
 app.post("/api/notes", (req, res) => {
   let notePosted = req.body;
-  let notes = JSON.parse(fs.readFile("./db/db.json", "utf8"));
+  let notes = JSON.parse(fs.readFile("/db/db.json", "utf8"));
   notePosted.id = uuidv4();
   notes.push(notePosted);
 
@@ -29,7 +29,7 @@ app.post("/api/notes", (req, res) => {
 });
 
 app.delete("/api/notes:id", (req, res) => {
-  const notes = JSON.parse(fs.readFile("./db/db.json", "utf8"));
+  const notes = JSON.parse(fs.readFile("/db/db.json", "utf8"));
   const keptNotes = notes.filter((note) => note.id != req.params.id);
 
   fs.writeFile("./db/db.json", JSON.stringify(keptNotes));
