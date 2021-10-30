@@ -15,7 +15,7 @@ app.get("/notes", (req, res) =>
 );
 
 app.get("/api/notes", (req, res) => {
-  res.sendFile("/db/db.json");
+  res.json("./db/db.json");
 });
 
 app.post("/api/notes", (req, res) => {
