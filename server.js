@@ -28,7 +28,10 @@ app.post("/api/notes", (req, res) => {
   fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
     if (err) {
       console.error(err);
+      res.status(500).json("Error writing the file");
       return;
+    } else {
+      res.status(201);
     }
   });
   res.json(notes);
@@ -40,7 +43,10 @@ app.delete("/api/notes/:id", (req, res) => {
   fs.writeFile("./db/db.json", JSON.stringify(keptNotes), (err) => {
     if (err) {
       console.error(err);
+      res.status(500).json("Error writing the file");
       return;
+    } else {
+      res.status(201);
     }
   });
   res.json(keptNotes);
